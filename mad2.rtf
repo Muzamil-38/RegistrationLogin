@@ -1,0 +1,709 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 To create an API key:\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Login to your google account and visit developers.google.com    \par
+{\pntext\f1\'B7\tab}Go to the APIs & Services > Credentials page.\par
+{\pntext\f1\'B7\tab} Go to the Credentials page\par
+{\pntext\f1\'B7\tab}On the Credentials page, click Create credentials > API key.\par
+{\pntext\f1\'B7\tab}The API key created dialog displays your newly created API key.\par
+{\pntext\f1\'B7\tab}Click Close.\par
+{\pntext\f1\'B7\tab}The new API key is listed on the Credentials page under API keys.\par
+
+\pard\sa200\sl276\slmult1\par
+CountDownTimer time = new CountDownTimer(3000,3000);\par
+\{\par
+onTick(long milis)\{\}\par
+onFinish()\{\par
+Intent intent = \u8203?new\u8203? Intent(MainActivity.\u8203?this\u8203?,LoginActivity.class);\par
+startActivity(intent);\par
+finish();\par
+\}\par
+\}time.start();\par
+\par
+EditText user,pass;\par
+Button btn;\par
+TextView gotolog;\par
+PrefConfig pref;\par
+@Override\par
+protected\u8203? \u8203?void \u8203?\u8203?onCreate\u8203?(Bundle savedInstanceState)\u8203? \{super\u8203?.onCreate(savedInstanceState);\par
+setContentView(R.layout.activity_signup);\par
+pref = \u8203?new\u8203? PrefConfig(\u8203?this\u8203?);\par
+user=findViewById(R.id.signup_username);\par
+pass=findViewById(R.id.signup_pass);\par
+btn=findViewById(R.id.signupBtn);\par
+gotolog=findViewById(R.id.gotologin);\par
+btn.setOnClickListener(\u8203?new\u8203? View.OnClickListener() \{\par
+@Override public \u8203?\u8203?void \u8203?\u8203?onClick\u8203?(View v)\u8203? \{boolean\u8203? saved=\u8203?false\u8203?;\par
+if\u8203?(!user.getText().toString().isEmpty())\{\par
+if\u8203?(!pass.getText().toString().isEmpty())\{\par
+saved=\u8203?true\u8203?;\par
+pref.writeUsername(user.getText().toString().trim());\par
+LoginActivitypref.writePassword(pass.getText().toString().trim());\par
+pref.displayToast(\u8203?"Account Created"\u8203?);\par
+Intent intent = \u8203?new\u8203? Intent(SignupActivity.\u8203?this\u8203?,LoginActivity.class);\par
+startActivity(intent);\}\par
+\}if\u8203?(!saved)\{user.setError(\u8203?""\u8203?);pass.setError(\u8203?""\u8203?);\}\}\par
+\});\par
+gotolog.setOnClickListener(\u8203?new\u8203? View.OnClickListener() \{\par
+@Override public\u8203? \u8203?void \u8203?\u8203?onClick\u8203?(View v)\u8203? \{Intent intent = \u8203?new\u8203? Intent(SignupActivity.\u8203?this\u8203?,LoginActivity.class);startActivity(intent);\}\})\par
+;\}\}\par
+ btn.setOnClickListener(\u8203?new\u8203? View.OnClickListener() \{\par
+@Override public\u8203? \u8203?void \u8203?\u8203?onClick\u8203?(View v)\u8203? \{if\u8203?(user.getText().toString().trim().equals(pref.readUsername()))\par
+\{\par
+if\u8203?(pass.getText().toString().trim().equals(pref.readPassword()))\{\par
+Intent intent = \u8203?new\u8203? Intent(LoginActivity.\u8203?this\u8203?,MainActivity.class);\par
+startActivity(intent);\par
+finish();\par
+\}\par
+\u8203?else\par
+\u8203?\{\par
+pass.setError(\u8203?""\u8203?);\}\par
+\}\par
+\u8203?else\u8203?\{user.setError(\u8203?""\u8203?);\}\par
+\}\});\par
+\}\}\par
+ private GoogleMap mMap;\par
+    private boolean mIsRestore;\par
+\par
+    protected int getLayoutId() \{\par
+        return R.layout.map;\par
+    \}\par
+\par
+    @Override\par
+    public void onCreate(Bundle savedInstanceState) \{\par
+        super.onCreate(savedInstanceState);\par
+        mIsRestore = savedInstanceState != null;\par
+        setContentView(getLayoutId());\par
+        setUpMap();\par
+    \}\par
+\par
+    @Override\par
+    public void onMapReady(GoogleMap map) \{\par
+        if (mMap != null) \{\par
+            return;\par
+        \}\par
+mMap = map;\par
+GroundOverlayOptions nwg = new GroundOverlayOptions()\par
+    .image(BitmapDescriptorFactory.fromResource(R.drawable.map_22))\par
+    .position(nwg, 8600, 6500);\par
+mMap.addGroundOverlay(nwg);\par
+        new google.maps.Map(document.getElementById("mMap"), \{\par
+  zoom,\par
+  center,\par
+  gestureHandling: "cooperative",\par
+\});\par
+    \}\par
+\par
+    private void setUpMap() \{\par
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);\par
+    \}\par
+    protected abstract void startDemo(boolean isRestore);\par
+\par
+    protected GoogleMap getMap() \{\par
+        return mMap;\par
+    \}\par
+EditText cityEditText;\par
+    Button getWeatherButton;\par
+    TextView weatherTextView;\par
+    String apiKey = "127623dg23sh66gd3622373gcx";\par
+  public void getWeather(View view)\{\par
+        Retrofit retrofit = new Retrofit.Builder().\par
+                baseUrl("{{\field{\*\fldinst{HYPERLINK https://api.openweathermap.org/data/2.5/ }}{\fldrslt{https://api.openweathermap.org/data/2.5/\ul0\cf0}}}}\f0\fs22 ").\par
+                addConverterFactory(GsonConverterFactory.create()).\par
+                build();\par
+        Weatherapi weatherapi = retrofit.create(Weatherapi.class);\par
+        Call<SerializableObjects> serializableObjectsCall =\par
+                weatherapi.getweather(cityEditText.getText().\par
+                        toString().trim(),apiKey);\par
+        serializableObjectsCall.enqueue(new Callback<SerializableObjects>() \{\par
+            @Override\par
+            public void onResponse(Call<SerializableObjects> call, Response<SerializableObjects> response) \{\par
+                if (response.code()==404)\{\par
+                    Toast.makeText(MainActivity.this, "Invalid City Name", Toast.LENGTH_SHORT).show();\par
+                \}else if (!response.isSuccessful())\{\par
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();\par
+                \}else\{\par
+                    SerializableObjects serializableObjects = response.body();\par
+                    WeatherModal weatherModal = serializableObjects.getWeatherModal();\par
+                    Double temp = weatherModal.getTemp();\par
+                    int temperature = (int) (temp-273.15);\par
+                    weatherTextView.setText(String.valueOf(temperature) + " C");\par
+\par
+                \}\par
+            \}\par
+\par
+            @Override\par
+            public void onFailure(Call<SerializableObjects> call, Throwable t) \{\par
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();\par
+            \}\par
+        \});\par
+\par
+\par
+    \}\par
+    @Override\par
+    protected void onCreate(Bundle savedInstanceState) \{\par
+        super.onCreate(savedInstanceState);\par
+        setContentView(R.layout.activity_main);\par
+        initview();\par
+\par
+    \}\par
+\par
+    private void initview() \{\par
+        cityEditText = findViewById(R.id.cityEditText);\par
+        getWeatherButton = findViewById(R.id.getWeatherButton);\par
+        weatherTextView = findViewById(R.id.weatherTextView);\par
+    \}\par
+\par
+import retrofit2.Call;\par
+import retrofit2.http.GET;\par
+import retrofit2.http.Query;\par
+\par
+public interface Weatherapi \{\par
+    @GET("weather")\par
+    Call<SerializableObjects> getweather(@Query("q") String cityName,\par
+                                         @Query("appid") String apiKey);\par
+\}\par
+\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Clouds \{\par
+\par
+@SerializedName("all")\par
+@Expose\par
+private Integer all;\par
+\par
+public Integer getAll() \{\par
+return all;\par
+\}\par
+\par
+public void setAll(Integer all) \{\par
+this.all = all;\par
+\}\par
+\par
+\}\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Coord \{\par
+\par
+@SerializedName("lon")\par
+@Expose\par
+private Double lon;\par
+@SerializedName("lat")\par
+@Expose\par
+private Double lat;\par
+\par
+public Double getLon() \{\par
+return lon;\par
+\}\par
+\par
+public void setLon(Double lon) \{\par
+this.lon = lon;\par
+\}\par
+\par
+public Double getLat() \{\par
+return lat;\par
+\}\par
+\par
+public void setLat(Double lat) \{\par
+this.lat = lat;\par
+\}\par
+\par
+\}\par
+package com.app.weather;\par
+\par
+import java.util.List;\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class SerializeableObjects \{\par
+\par
+@SerializedName("coord")\par
+@Expose\par
+private Coord coord;\par
+@SerializedName("weather")\par
+@Expose\par
+private List<Weather> weather = null;\par
+@SerializedName("base")\par
+@Expose\par
+private String base;\par
+@SerializedName("main")\par
+@Expose\par
+private Main main;\par
+@SerializedName("visibility")\par
+@Expose\par
+private Integer visibility;\par
+@SerializedName("wind")\par
+@Expose\par
+private Wind wind;\par
+@SerializedName("clouds")\par
+@Expose\par
+private Clouds clouds;\par
+@SerializedName("dt")\par
+@Expose\par
+private Integer dt;\par
+@SerializedName("sys")\par
+@Expose\par
+private Sys sys;\par
+@SerializedName("timezone")\par
+@Expose\par
+private Integer timezone;\par
+@SerializedName("id")\par
+@Expose\par
+private Integer id;\par
+@SerializedName("name")\par
+@Expose\par
+private String name;\par
+@SerializedName("cod")\par
+@Expose\par
+private Integer cod;\par
+\par
+public Coord getCoord() \{\par
+return coord;\par
+\}\par
+\par
+public void setCoord(Coord coord) \{\par
+this.coord = coord;\par
+\}\par
+\par
+public List<Weather> getWeather() \{\par
+return weather;\par
+\}\par
+\par
+public void setWeather(List<Weather> weather) \{\par
+this.weather = weather;\par
+\}\par
+\par
+public String getBase() \{\par
+return base;\par
+\}\par
+\par
+public void setBase(String base) \{\par
+this.base = base;\par
+\}\par
+\par
+public Main getMain() \{\par
+return main;\par
+\}\par
+\par
+public void setMain(Main main) \{\par
+this.main = main;\par
+\}\par
+\par
+public Integer getVisibility() \{\par
+return visibility;\par
+\}\par
+\par
+public void setVisibility(Integer visibility) \{\par
+this.visibility = visibility;\par
+\}\par
+\par
+public Wind getWind() \{\par
+return wind;\par
+\}\par
+\par
+public void setWind(Wind wind) \{\par
+this.wind = wind;\par
+\}\par
+\par
+public Clouds getClouds() \{\par
+return clouds;\par
+\}\par
+\par
+public void setClouds(Clouds clouds) \{\par
+this.clouds = clouds;\par
+\}\par
+\par
+public Integer getDt() \{\par
+return dt;\par
+\}\par
+\par
+public void setDt(Integer dt) \{\par
+this.dt = dt;\par
+\}\par
+\par
+public Sys getSys() \{\par
+return sys;\par
+\}\par
+\par
+public void setSys(Sys sys) \{\par
+this.sys = sys;\par
+\}\par
+\par
+public Integer getTimezone() \{\par
+return timezone;\par
+\}\par
+\par
+public void setTimezone(Integer timezone) \{\par
+this.timezone = timezone;\par
+\}\par
+\par
+public Integer getId() \{\par
+return id;\par
+\}\par
+\par
+public void setId(Integer id) \{\par
+this.id = id;\par
+\}\par
+\par
+public String getName() \{\par
+return name;\par
+\}\par
+\par
+public void setName(String name) \{\par
+this.name = name;\par
+\}\par
+\par
+public Integer getCod() \{\par
+return cod;\par
+\}\par
+\par
+public void setCod(Integer cod) \{\par
+this.cod = cod;\par
+\}\par
+\par
+\}\par
+\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Main \{\par
+\par
+@SerializedName("temp")\par
+@Expose\par
+private Double temp;\par
+@SerializedName("feels_like")\par
+@Expose\par
+private Integer feelsLike;\par
+@SerializedName("temp_min")\par
+@Expose\par
+private Double tempMin;\par
+@SerializedName("temp_max")\par
+@Expose\par
+private Double tempMax;\par
+@SerializedName("pressure")\par
+@Expose\par
+private Integer pressure;\par
+@SerializedName("humidity")\par
+@Expose\par
+private Integer humidity;\par
+\par
+public Double getTemp() \{\par
+return temp;\par
+\}\par
+\par
+public void setTemp(Double temp) \{\par
+this.temp = temp;\par
+\}\par
+\par
+public Integer getFeelsLike() \{\par
+return feelsLike;\par
+\}\par
+\par
+public void setFeelsLike(Integer feelsLike) \{\par
+this.feelsLike = feelsLike;\par
+\}\par
+\par
+public Double getTempMin() \{\par
+return tempMin;\par
+\}\par
+\par
+public void setTempMin(Double tempMin) \{\par
+this.tempMin = tempMin;\par
+\}\par
+\par
+public Double getTempMax() \{\par
+return tempMax;\par
+\}\par
+\par
+public void setTempMax(Double tempMax) \{\par
+this.tempMax = tempMax;\par
+\}\par
+\par
+public Integer getPressure() \{\par
+return pressure;\par
+\}\par
+\par
+public void setPressure(Integer pressure) \{\par
+this.pressure = pressure;\par
+\}\par
+\par
+public Integer getHumidity() \{\par
+return humidity;\par
+\}\par
+\par
+public void setHumidity(Integer humidity) \{\par
+this.humidity = humidity;\par
+\}\par
+\par
+\}\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Sys \{\par
+\par
+@SerializedName("type")\par
+@Expose\par
+private Integer type;\par
+@SerializedName("id")\par
+@Expose\par
+private Integer id;\par
+@SerializedName("country")\par
+@Expose\par
+private String country;\par
+@SerializedName("sunrise")\par
+@Expose\par
+private Integer sunrise;\par
+@SerializedName("sunset")\par
+@Expose\par
+private Integer sunset;\par
+\par
+public Integer getType() \{\par
+return type;\par
+\}\par
+\par
+public void setType(Integer type) \{\par
+this.type = type;\par
+\}\par
+\par
+public Integer getId() \{\par
+return id;\par
+\}\par
+\par
+public void setId(Integer id) \{\par
+this.id = id;\par
+\}\par
+\par
+public String getCountry() \{\par
+return country;\par
+\}\par
+\par
+public void setCountry(String country) \{\par
+this.country = country;\par
+\}\par
+\par
+public Integer getSunrise() \{\par
+return sunrise;\par
+\}\par
+\par
+public void setSunrise(Integer sunrise) \{\par
+this.sunrise = sunrise;\par
+\}\par
+\par
+public Integer getSunset() \{\par
+return sunset;\par
+\}\par
+\par
+public void setSunset(Integer sunset) \{\par
+this.sunset = sunset;\par
+\}\par
+\par
+\}\par
+\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Weather \{\par
+\par
+@SerializedName("id")\par
+@Expose\par
+private Integer id;\par
+@SerializedName("main")\par
+@Expose\par
+private String main;\par
+@SerializedName("description")\par
+@Expose\par
+private String description;\par
+@SerializedName("icon")\par
+@Expose\par
+private String icon;\par
+\par
+public Integer getId() \{\par
+return id;\par
+\}\par
+\par
+public void setId(Integer id) \{\par
+this.id = id;\par
+\}\par
+\par
+public String getMain() \{\par
+return main;\par
+\}\par
+\par
+public void setMain(String main) \{\par
+this.main = main;\par
+\}\par
+\par
+public String getDescription() \{\par
+return description;\par
+\}\par
+\par
+public void setDescription(String description) \{\par
+this.description = description;\par
+\}\par
+\par
+public String getIcon() \{\par
+return icon;\par
+\}\par
+\par
+public void setIcon(String icon) \{\par
+this.icon = icon;\par
+\}\par
+\par
+\}\par
+\par
+package com.app.weather;\par
+\par
+import com.google.gson.annotations.Expose;\par
+import com.google.gson.annotations.SerializedName;\par
+\par
+public class Wind \{\par
+\par
+@SerializedName("speed")\par
+@Expose\par
+private Double speed;\par
+@SerializedName("deg")\par
+@Expose\par
+private Integer deg;\par
+\par
+public Double getSpeed() \{\par
+return speed;\par
+\}\par
+\par
+public void setSpeed(Double speed) \{\par
+this.speed = speed;\par
+\}\par
+\par
+public Integer getDeg() \{\par
+return deg;\par
+\}\par
+\par
+public void setDeg(Integer deg) \{\par
+this.deg = deg;\par
+\}\par
+\par
+\}\par
+SharedPreferences sharedPreferences;\par
+sharedPreferences = this.getSharedPreferences("com.app.weather", Context.MODE_PRIVATE);\par
+        name = sharedPreferences.getString("username", "NULL");\par
+        nameTextView = findViewById(R.id.nameTextView);\par
+        if (name.equals("NULL")) \{\par
+startActivity(new Intent(InfoActivity.this,LoginActivity.class));\par
+    \}\par
+ com.saad.langpref.utils;import\u8203? android.content.Context;import\u8203? android.content.SharedPreferences;import\u8203? android.widget.Toast;import\u8203? com.saad.langpref.R;public\u8203?\u8203?class\u8203?\u8203?PrefConfig\u8203? \{private\u8203? SharedPreferences sharedPreferences;private\u8203? Context context;public\u8203?\u8203?PrefConfig\u8203?(Context context)\u8203?\{this\u8203?.context=context;\par
+sharedPreferences=context.getSharedPreferences(context.getString(R.string.pref_file),Context.MODE_PRIVATE);\}\par
+public\u8203?\u8203?void\u8203?\u8203?writeLang\u8203?(String name)\u8203?\{\par
+SharedPreferences.Editor editor=sharedPreferences.edit();\par
+editor.putString(context.getString(R.string.pref_lang),name);\par
+editor.commit();\}\par
+public\u8203? String \u8203?readLang\u8203?()\u8203?\{return sharedPreferences.getString(context.getString(R.string.pref_lang),\u8203?"false"\u8203?);\}\par
+public\u8203? \u8203?void\u8203? \u8203?writeUsername\u8203?(String name)\u8203?\{SharedPreferences.Editor editor=sharedPreferences.edit();\par
+editor.putString(context.getString(R.string.pref_username),name);\par
+editor.commit();\}\par
+public\u8203? String \u8203?readUsername\u8203?()\u8203?\{return sharedPreferences.getString(context.getString(R.string.pref_username),\u8203?"false"\u8203?);\}\par
+public \u8203?\u8203?void \u8203?\u8203?writePassword\u8203?(String name)\u8203?\{SharedPreferences.Editor editor=sharedPreferences.edit();\par
+editor.putString(context.getString(R.string.pref_pass),name);\par
+editor.commit();\}\par
+public\u8203? String \u8203?readPassword\u8203?()\u8203?\{\par
+return sharedPreferences.getString(context.getString(R.string.pref_pass),\u8203?"false"\u8203?);\}\par
+\}\par
+LocationManager locationManager;\par
+    LocationListener locationListener;\par
+    TextView lattitudeTextView, longitudeTextView, accuracyTextView, altitudeTextView, addressTextView;\par
+\par
+    @Override\par
+    protected void onCreate(Bundle savedInstanceState) \{\par
+        super.onCreate(savedInstanceState);\par
+        setContentView(R.layout.activity_main);\par
+        initListener();\par
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);\par
+        locationListener = new LocationListener() \{\par
+            @Override\par
+            public void onLocationChanged(@NonNull Location location) \{\par
+                updateLocationInfo(location);\par
+            \}\par
+        \};\par
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) \{\par
+            ActivityCompat.requestPermissions(this, new String[]\{Manifest.permission.ACCESS_FINE_LOCATION\}, 1);\par
+        \} else \{\par
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);\par
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);\par
+            if (lastKnownLocation != null) \{\par
+                updateLocationInfo(lastKnownLocation);\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    private void initListener() \{\par
+        lattitudeTextView = findViewById(R.id.lattitudeTextView);\par
+        longitudeTextView = findViewById(R.id.longitudeTextView);\par
+        accuracyTextView = findViewById(R.id.accuracyTextView);\par
+        altitudeTextView = findViewById(R.id.altitudeTextView);\par
+        addressTextView = findViewById(R.id.addressTextView);\par
+    \}\par
+\par
+    @Override\par
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) \{\par
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);\par
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) \{\par
+            startListening();\par
+\par
+        \}\par
+    \}\par
+\par
+    public void startListening() \{\par
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) \{\par
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);\par
+\par
+        \}\par
+    \}\par
+\par
+    public void updateLocationInfo(Location location) \{\par
+        lattitudeTextView.setText("Lattitude: " + Double.toString(location.getLatitude()));\par
+        longitudeTextView.setText("Longitude: " + Double.toString(location.getLongitude()));\par
+        accuracyTextView.setText("Accuracy: " + Double.toString(location.getAccuracy()));\par
+        altitudeTextView.setText("Altitude: " + Double.toString(location.getAltitude()));\par
+        String address = "Could not find address :(";\par
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());\par
+        try \{\par
+            List<Address> listAddresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);\par
+            if (listAddresses != null && listAddresses.size() > 0) \{\par
+                address = "Address\\n";\par
+                if (listAddresses.get(0).getThoroughfare() != null) \{\par
+                    address += listAddresses.get(0).getThoroughfare() + "\\n";\par
+                \}\par
+                if (listAddresses.get(0).getLocality() != null) \{\par
+                    address += listAddresses.get(0).getLocality() + " ";\par
+                \}\par
+                if (listAddresses.get(0).getLocality() != null) \{\par
+                    address += listAddresses.get(0).getLocality() + " ";\par
+                \}\par
+                if (listAddresses.get(0).getPostalCode() != null) \{\par
+                    address += listAddresses.get(0).getPostalCode() + " ";\par
+                \}\par
+                if (listAddresses.get(0).getAdminArea() != null) \{\par
+                    address += listAddresses.get(0).getAdminArea() + " ";\par
+                \}\par
+\par
+            \}\par
+        \} catch (Exception e) \{\par
+            e.printStackTrace();\par
+        \}\par
+\par
+        addressTextView.setText(address);\par
+    \}\par
+}
+ 
